@@ -1,4 +1,4 @@
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
 
 var IssueSchema = new mongoose.Schema({
 	id: Number,
