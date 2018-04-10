@@ -1,5 +1,3 @@
-var express = require("express");
-
 // Get the documentation for the API
 function getDocumentation(req, res) {
 	var apiDocumentation =
@@ -8,7 +6,6 @@ function getDocumentation(req, res) {
  	1. getAllIssues
  	2. getSingleIssue
  	3. createNewIssue`;
-	console.log("return doc");
 	res.send(apiDocumentation);
 }
 

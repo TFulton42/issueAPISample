@@ -11,12 +11,14 @@ var	issue = require("../server/api_modules/issues");
 
 describe('createNewIssue Tests', () => {
 
+	// Setup the database
 	before(() => {
 		return new Promise((resolve, reject) => {
 			setupDB.openAndClearDB(resolve, reject);
 		});
 	});
 
+	// Run the tests
 	describe('Test createNewIssue', () => {
 		it('should create a valid new issue with issue number 5', async() => {
 			var newIssue = {
@@ -87,6 +89,7 @@ describe('createNewIssue Tests', () => {
 		});
 	});
 
+	// Clean up the database
 	after(() => {
 		return new Promise((resolve, reject) => {
 			setupDB.closeDB(resolve, reject);

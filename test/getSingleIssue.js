@@ -11,12 +11,14 @@ var	issue = require("../server/api_modules/issues");
 
 describe('getSingleIssue Tests', () => {
 
+	// Setup the database
 	before(() => {
 		return new Promise((resolve, reject) => {
 			setupDB.openAndClearDB(resolve, reject);
 		});
 	});
 
+	// Run the tests
 	describe('Test getSingleIssue', () => {
 		it('should return issue 3', async() => {
 			var issue3 = new Issues({
@@ -54,6 +56,7 @@ describe('getSingleIssue Tests', () => {
 		});
 	});
 
+	// Clean up the database
 	after(() => {
 		return new Promise((resolve, reject) => {
 			setupDB.closeDB(resolve, reject);

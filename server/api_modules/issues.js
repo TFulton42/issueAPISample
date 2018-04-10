@@ -1,8 +1,6 @@
-var express = require("express");
-
 // MongoDB Models
-var Issues = require("../models/issues"),
-	Files = require("../models/files");
+var Issues = require('../models/issues'),
+	Files = require('../models/files');
 
 // Get all of the issues. I'm sorting by ID, but this could obviously
 // be configurable. You would probably also filter by status, date, etc.
@@ -18,10 +16,10 @@ function getAllIssues() {
 			if (err) {
 				console.log(err);
 				retVal.status = 500;
-				retVal.errString = `Error accessing database`;
-				resolve(retVal);
+				retVal.errString = 'Error accessing database';
+				return resolve(retVal);
 			} else {
-				resolve(retVal);
+				return resolve(retVal);
 			}
 		});
 	});
@@ -34,7 +32,7 @@ function getOneIssue(id) {
 		var retVal = {status: 200, errString: ''};
 		if (isNaN(id)) {
 			retVal.status = 400;
-			retVal.errString = `Invalid issue number`;
+			retVal.errString = 'Invalid issue number';
 			resolve(retVal);
 		} else {
 			Issues.findOne({id: id})
@@ -43,11 +41,11 @@ function getOneIssue(id) {
 			.exec((err, foundIssue) => {
 				if (err) {
 					retVal.status = 500;
-					retVal.errString = `Error accessing database`;
+					retVal.errString = 'Error accessing database';
 					resolve(retVal);
 				} else if (!foundIssue) {
 					retVal.status = 404;
-					retVal.errString = `Issue not found`;
+					retVal.errString = 'Issue not found';
 					resolve(retVal);
 				} else {
 					retVal.issue = foundIssue;
@@ -74,15 +72,15 @@ function createNewIssue(body) {
 		// that the input values are non-null.
 		if (!body.title || body.title === '') {
 			retVal.status = 400;
-			retVal.errString = `Missing title`;
+			retVal.errString = 'Missing title';
 			resolve(retVal);
 		} else if (!body.description || body.description === '') {
 			retVal.status = 400;
-			retVal.errString = `Missing description`;
+			retVal.errString = 'Missing description';
 			resolve(retVal);
 		} else if (!body.reportedBy || body.reportedBy === '') {
 			retVal.status = 400;
-			retVal.errString = `Missing reportedBy`;
+			retVal.errString = 'Missing reportedBy';
 			resolve(retVal);
 		} else {
 			// See if there's already an issue. If not, this will be ID = 1.
@@ -99,7 +97,7 @@ function createNewIssue(body) {
 			.exec(function(err, foundIssue) {
 				if (err) {
 					retVal.status = 500;
-					retVal.errString = `Error accessing database`;
+					retVal.errString = 'Error accessing database';
 					resolve(retVal);
 				} else {
 					if (!foundIssue) {
@@ -122,7 +120,7 @@ function createNewIssue(body) {
 					Issues.create(newIssue, function(err, newRecord) {
 						if (err) {
 							retVal.status = 500;
-							retVal.errString = `Error accessing database`;
+							retVal.errString = 'Error accessing database';
 							resolve(retVal);
 						}
 						retVal.issue = newRecord.id;

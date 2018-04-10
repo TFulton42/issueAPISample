@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 
 var FileSchema = new mongoose.Schema({
-	name: String,
-	localtion: String,
+	originalFileName: String,
+	location: String,
 	uploadedBy: String,
 	dateSubmitted: Date,
 	issueBelongedTo: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Issues' }]
