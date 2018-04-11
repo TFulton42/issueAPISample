@@ -7,7 +7,7 @@ var	mongoose = require('mongoose'),
 var Issues = require('../server/models/issues');
 
 // Tested functions
-var	issue = require("../server/api_modules/issues");
+var	issue = require('../server/api_modules/issues');
 
 describe('getAllIssues Tests', () => {
 

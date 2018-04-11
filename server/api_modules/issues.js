@@ -9,7 +9,7 @@ var Issues = require('../models/issues'),
 function getAllIssues() {
 	return new Promise((resolve, reject) => {
 		Issues.find({})
-		.select('id -_id title description reportedBy assignedTo dateSubmitted')
+		.select('-_id -files -__v')
 		.sort({id: 'asc'})
 		.exec(function(err, list) {
 			var retVal = {status: 200, errString: '', issues: list};
@@ -36,7 +36,7 @@ function getOneIssue(id) {
 			resolve(retVal);
 		} else {
 			Issues.findOne({id: id})
-			.select('-_id -__v')
+			.select('-_id -__v -files')
 			.populate({path: 'files', options: {sort: {dataSubmitted: 'asc'}}})
 			.exec((err, foundIssue) => {
 				if (err) {

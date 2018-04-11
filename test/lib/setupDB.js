@@ -10,15 +10,16 @@ function openAndClearDB(resolve, reject) {
 	var db = mongoose.connection;
 	db.on('error', console.error.bind(console, 'connection error'));
 	db.once('open', () => {
-		mongoose.connection.db.dropCollection('issues', (err, result) => {
-			if (err == 'ns not found') {
-				reject(`Couldn't drop collection: ${err}`);
+		mongoose.connection.db.dropDatabase((err, result) => {
+			if (err) {
+				reject('Couldn\'t drop database');
 			}
 			issueArray = createIssueObject();
 			Issues.create(issueArray, (err, newRecords) => {
 				if (err) {
 					reject(`Couldn't add records: ${err}`);
 				}
+				// Now add the uploaded files
 				resolve();
 			});
 		});
@@ -40,6 +41,7 @@ function createIssueObject() {
 			reportedBy: 'Darth Vader',
 			assignedTo: '',
 			dateSubmitted: Date.now(),
+			status: 'Open'
 		}),
 		issue2 = new Issues({
 			id: 2,
@@ -48,6 +50,7 @@ function createIssueObject() {
 			reportedBy: 'Grand Moff Tarkin',
 			assignedTo: '',
 			dateSubmitted: Date.now(),
+			status: 'Open'
 		}),
 		issue3 = new Issues({
 			id: 3,
@@ -56,6 +59,7 @@ function createIssueObject() {
 			reportedBy: 'Luke Skywalker',
 			assignedTo: 'Yoda',
 			dateSubmitted: Date.now(),
+			status: 'Open'
 		}),
 		issue4 = new Issues({
 			id: 4,
@@ -64,6 +68,7 @@ function createIssueObject() {
 			reportedBy: 'Owen Lars',
 			assignedTo: 'Luke Skywalker',
 			dateSubmitted: Date.now(),
+			status: 'Open'
 		});
 
 	return [issue1, issue2, issue3, issue4];
