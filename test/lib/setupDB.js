@@ -2,35 +2,61 @@ var	mongoose = require('mongoose');
 
 var dbURI = 'mongodb://Florence:Florence@ds129144.mlab.com:29144/fulton';
 
-var Issues = require('../../server/models/issues');
+var Issues = require('../../server/models/issues'),
+	Files = require('../../server/models/files');
 
 function openAndClearDB(resolve, reject) {
 	// Open up the DB connection and drop and existing collections
+	// A bit of callback hell here. I should probably modularize this.
 	mongoose.connect(dbURI);
 	var db = mongoose.connection;
 	db.on('error', console.error.bind(console, 'connection error'));
 	db.once('open', () => {
 		mongoose.connection.db.dropDatabase((err, result) => {
 			if (err) {
-				reject('Couldn\'t drop database');
+				return reject('Couldn\'t drop database');
 			}
 			issueArray = createIssueObject();
 			Issues.create(issueArray, (err, newRecords) => {
 				if (err) {
-					reject(`Couldn't add records: ${err}`);
+					return reject(`Couldn't add records: ${err}`);
 				}
 				// Now add the uploaded files
-				resolve();
+				sampleFile = createFileObject(newRecords[1]._id);
+				Files.create(sampleFile, (err, newFile) => {
+					if (err) {
+						return reject(`Could't add file: ${err}`);
+					}
+					newRecords[1].files[0] = newFile._id;
+					Issues.findOneAndUpdate({id: 2}, newRecords[1], (err) => {
+						if (err) {
+							return reject(`Could't save revised issue: ${err}`);
+						}
+						return resolve();
+					});
+				});
 			});
 		});
 	});
 }
 
 function closeDB(resolve, reject) {
-	// mongoose.connection.db.dropDatabase(() => {
+	mongoose.connection.db.dropDatabase(() => {
 		mongoose.connection.close();
-		resolve();
-	// });
+		return resolve();
+	});
+}
+
+function createFileObject(dbId) {
+	var file1 = new Files({
+		fileNumber: 1,
+		originalFileName: 'test42.txt',
+		location: 'filestorage\\testfile.txt',
+		uploadedBy: 'Yogi Bear',
+		dateSubmitted: Date.now(),
+		issueBelongedTo: dbId	
+	});
+	return file1;
 }
 
 function createIssueObject() {

@@ -5,6 +5,7 @@ var express = require('express'),
 var app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
 
 var issueApiRoutes = require('./routes/issueapi');
 
@@ -13,7 +14,7 @@ mongoose.Promise = global.Promise;
 // mongoose.connect('mongodb://Florence:Florence@ds129144.mlab.com:29144/fulton', {useMongoClient: true});
 mongoose.connect('mongodb://Florence:Florence@ds129144.mlab.com:29144/fulton');
 
-// The API routes - It may not be necessary to break this into 3 files for this small API.
+// The API routes - It may not be necessary to break this into 2 files for this small API.
 // But for something bigger, I would like the modularity.
 app.use('/api/v1', issueApiRoutes);
 

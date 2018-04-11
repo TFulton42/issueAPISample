@@ -41,6 +41,7 @@ function uploadFile(id, fileObj, bodyObj) {
 			deleteFile(fileObj.path);
 			return resolve(retVal);
 		}
+		// Find the related issue
 		Issues.findOne({id: id}, (err, foundIssue) => {
 			if (err) {
 				retVal.status = 500;
@@ -87,6 +88,7 @@ function uploadFile(id, fileObj, bodyObj) {
 							deleteFile(fileObj.path);
 							return resolve(retVal);
 						}
+						// Add the file id to the issue
 						foundIssue.files.push(newFile._id);
 						foundIssue.save((err) => {
 							if (err) {
@@ -103,10 +105,11 @@ function uploadFile(id, fileObj, bodyObj) {
 	});
 }
 
-function getAllFiles(issue, fileNumber) {
+function downloadFile(issue, fileNumber) {
 	return new Promise((resolve, reject) => {
-		var retVal = {status: 200, fileLocation: '', fileName: '', errString: 'All files'};
+		var retVal = {status: 200, fileLocation: '', fileName: '', errString: ''};
 
+		// Find the related issue
 		Issues.find({id: issue})
 		.populate({path: 'files', match: {fileNumber: fileNumber}})
 		.exec((err, foundFiles) => {
@@ -115,14 +118,17 @@ function getAllFiles(issue, fileNumber) {
 				retVal.errString = 'Error accessing database';
 				return resolve(retVal);
 			}
+			// Make sure there are 2 issues with the same ID
 			if (foundFiles.length !== 1) {
 				retVal.status = 409;
-				retVal.errString = 'Duplicate issues found'
+				retVal.errString = 'Duplicate issues found';
 				return resolve(retVal);
 			}
+			// Make sure there aren't 2 files with the same ID
 			if (foundFiles[0].files.length !== 1) {
+				console.log(foundFiles);
 				retVal.status = 409;
-				retVal.errString = 'Duplicate files found'
+				retVal.errString = 'Duplicate files found';
 				return resolve(retVal);
 			}
 			retVal.fileLocation = foundFiles[0].files[0].location;
@@ -142,4 +148,4 @@ function deleteFile(path)
 }
 
 module.exports.uploadFile = uploadFile;
-module.exports.getAllFiles = getAllFiles;
+module.exports.downloadFile = downloadFile;

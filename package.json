@@ -9,6 +9,7 @@
   "author": "Tom Fulton",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^2.5.8",
     "express": "^4.16.3",
     "mongoose": "^5.0.13",
     "multer": "^1.3.0"

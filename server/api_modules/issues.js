@@ -26,15 +26,16 @@ function getAllIssues() {
 	});
 }
 
-// Get an individual issue. Since there are supposed to be any duplicates
+// Get an individual issue. Since there aren't supposed to be any duplicates
 // (addressed below), I'm using findOne to ensure I'm only passing one back.
 function getOneIssue(id) {
 	return new Promise((resolve, reject) => {
 		var retVal = {status: 200, errString: ''};
+		// Validate the type of the ID
 		if (isNaN(id)) {
 			retVal.status = 400;
 			retVal.errString = 'Invalid issue number';
-			resolve(retVal);
+			return resolve(retVal);
 		} else {
 			Issues.findOne({id: id})
 			.select('-_id -__v')
@@ -43,14 +44,14 @@ function getOneIssue(id) {
 				if (err) {
 					retVal.status = 500;
 					retVal.errString = 'Error accessing database';
-					resolve(retVal);
+					return resolve(retVal);
 				} else if (!foundIssue) {
 					retVal.status = 404;
 					retVal.errString = 'Issue not found';
-					resolve(retVal);
+					return resolve(retVal);
 				} else {
 					retVal.issue = foundIssue;
-					resolve(retVal);
+					return resolve(retVal);
 				}
 			});
 		}
@@ -74,15 +75,15 @@ function createNewIssue(body) {
 		if (!body.title || body.title === '') {
 			retVal.status = 400;
 			retVal.errString = 'Missing title';
-			resolve(retVal);
+			return resolve(retVal);
 		} else if (!body.description || body.description === '') {
 			retVal.status = 400;
 			retVal.errString = 'Missing description';
-			resolve(retVal);
+			return resolve(retVal);
 		} else if (!body.reportedBy || body.reportedBy === '') {
 			retVal.status = 400;
 			retVal.errString = 'Missing reportedBy';
-			resolve(retVal);
+			return resolve(retVal);
 		} else {
 			// See if there's already an issue. If not, this will be ID = 1.
 			// If an record exists, the new ID will one plus the current largest.
@@ -117,15 +118,16 @@ function createNewIssue(body) {
 						dateSubmitted: Date.now(),
 						status: 'Open'
 					});
+					
 					// Finally create the record and return success (hopefully).
 					Issues.create(newIssue, function(err, newRecord) {
 						if (err) {
 							retVal.status = 500;
 							retVal.errString = 'Error accessing database';
-							resolve(retVal);
+							return resolve(retVal);
 						}
 						retVal.issue = newRecord.id;
-						resolve(retVal);
+						return resolve(retVal);
 					});
 				}
 			});

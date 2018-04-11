@@ -37,7 +37,7 @@ describe('uploadFile Tests', () => {
 			// Use the get method and check that there is just one file record
 			var issue3 = await issues.getOneIssue(3);
 			assert.equal(issue3.issue.files.length, 1, 'incorrect number of file records');
-			assert.equal(issue3.issue.files[0].fileNumber, 1, 'incorrect fileNumber');
+			assert.equal(issue3.issue.files[0].fileNumber, 2, 'incorrect fileNumber');
 		});
 
 		it('should fail if an empty file is uploaded', async() => {

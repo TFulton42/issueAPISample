@@ -2,8 +2,7 @@ var express = require('express'),
 	router = express.Router(),
 	multer = require('multer'),
 	issue = require('../api_modules/issues'),
-	file = require('../api_modules/files'),
-	doc = require('../api_modules/doc');
+	file = require('../api_modules/files');
 
 // Configure the file upload destination
 var storage = multer.diskStorage({
@@ -17,11 +16,13 @@ var storage = multer.diskStorage({
 	upload = multer({storage: storage});
 
 // The home route for the API. This will return some documentation for the API
-router.get('/', doc.getDocumentation);
+router.get('/', (req, res) => {
+	res.render('documentation');
+});
 
 // The INDEX route for all files for a specific issue
 router.get('/issues/:issue/files/:fileNumber', (req, res) => {
-	file.getAllFiles(req.params.issue, req.params.fileNumber)
+	file.downloadFile(req.params.issue, req.params.fileNumber)
 	.then(result => {
 		if (result.status === 200) {
 			var fileName = __dirname + '\\..\\' + result.fileLocation;
