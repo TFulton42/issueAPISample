@@ -96,31 +96,6 @@ describe('uploadFile Tests', () => {
 			assert.equal(result.errString, 'Issue not found', 'errString incorrect');
 			// Check to see if the record was actually created. See comment above.
 		});
-
-
-
-
-
-
-
-
-			// var newIssue = {
-			// 	title: 'Episodes I, II, and III are terrible',
-			// 	description: 'OK, Maybe III is OK, but really? Jar-jar? And Hayden Christensen?',
-			// 	reportedBy: 'Everyone'
-			// };
-			// var result = await issue.createNewIssue(newIssue);
-			// var dbResult = await issue.getOneIssue(5);
-			// assert.isObject(result, 'Result is not an object');
-			// assert.equal(result.status, 200, 'Status not 200');
-			// assert.isEmpty(result.errString, 'ErrString is not null');
-			// assert.equal(result.issue, 5, 'New issue is not 5');
-			// assert.equal(dbResult.issue.id, 5, 'New issue is not 5 in database');
-			// assert.equal(dbResult.issue.title, newIssue.title, 'Titles not equal in database');
-			// assert.equal(dbResult.issue.description, newIssue.description, 'Descriptions not equal in database');
-			// assert.equal(dbResult.issue.reportedBy, newIssue.reportedBy, 'ReportedBys not equal in database');
-			// assert.isEmpty(dbResult.issue.assignedTo, 'AssignedTos not empty');
-			// assert.equal(dbResult.issue.status, 'Open', 'Status not \'Open\' in database');
 	});
 
 	// Clean up the database
