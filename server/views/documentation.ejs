@@ -3,14 +3,20 @@
 <head>
 	<title>Issue API Documentation</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="/stylesheets/app.css">
 </head>
 <body>
 	<div class="container">
 		<h1>Issue API Documentation</h1>
+		<p>This issue and file API is designed to allow an application to create and get issues and upload and download
+		files associated with those issues.</p>
 		<h2>Issues</h2>
 		<h3>Get a single issue</h3>
-		<p>GET /api/v1/issues/:id</p>
+		<p>GET /api/v1/issues/:issueId</p>
+		<h4>Parameters</h4>
+		<span class="indent">:issueId - a positive integer that was previously assigned and returned by the server on creation of the issue</span>
 		<h4>Response</h4>
+		<p>On a successful request, the response is a JSON object with the following information and a status of 200. An appropriate failure status and error message are returned if the request fails.</p>
 		<pre><code>
 	{
 		"id": 1,
@@ -31,19 +37,35 @@
 		<h3>Get all issues</h3>
 		<p>GET /api/v1/issues</p>
 		<h4>Response</h4>
-		<p>An array of all issues formatted as above</p>
+		<p>On a successful request, the response is a JSON object with an array of all issues formatted as above and a status of 200. An appropriate failure status and error message are returned if the request fails.</p>
 
 		<h3>Create an issue</h3>
 		<p>POST /api/v1/issues</p>
-		<p>Parameters</p>
-		<pre><code>
-	{
-		"title": String,		// The title of the issue
-		"description": String, 	// The description of the issue
-		"reportedBy": String	// The author of the issue
-	}
-		</code></pre>
+		<h4>Parameters</h4>
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td>title</td>
+				<td>String</td>
+				<td>The title of the issue.</td>
+			</tr>
+			<tr>
+				<td>description</td>
+				<td>String</td>
+				<td>The full description of the issue.</td>
+			</tr>
+			<tr>
+				<td>reportedBy</td>
+				<td>String</td>
+				<td>The name of the person reporting the issue.</td>
+			</tr>
+		</table>
 		<h4>Response</h4>
+		<p>On a successful request, this response is a JSON object that contains the id of the newly created issue and a status of 200. An appropriate failure status and error message are returned if the request fails.</p>
 		<pre><code>
 	{
 		"new-issue": 2
@@ -51,27 +73,43 @@
 		</code></pre>
 
 		<h2>Files</h2>
-		<h3>Download a file associated with an issue</h3>
-		<p>GET /api/v1/issues/:issueId/files/:fileNumber</p>
-		<h4>Response</h4>
-		<p>The file is downloaded to the user</p>
-
 		<h3>Upload a file associated with an issue</h3>
 		<p>POST /api/v1/issues/:issueId/files</p>
-		<p>Parameters</p>
-		<pre><code>
-	{
-		"filename": "test.txt", // The title of the file
-		"author": "Hadji"		// The author of the file
-	}
-		</code></pre>
+		<h4>Parameters</h4>
+		<span class="indent">:issueId - the ID of the issue for which the file is being uploaded</span>
+		<span class="indent">The body of the file to be uploaded should be appropriately encoded in the payload of the HTTP request. In addition, the following parameters are required.</span>
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td>filename</td>
+				<td>String</td>
+				<td>The name of the file.</td>
+			</tr>
+			<tr>
+				<td>author</td>
+				<td>String</td>
+				<td>The author of the file</td>
+			</tr>
+		</table>
 		<h4>Response</h4>
-		<p>The file is uploaded to the server</p>
+		<p>On a successful request, this response is a JSON object that contains a JSON encoded success message and a status of 200. An appropriate failure status and error message are returned if the request fails.</p>
 		<pre><code>
 	{
 		"result": "File uploaded successfully"
 	}
 		</code></pre>
+
+		<h3>Download a file associated with an issue</h3>
+		<p>GET /api/v1/issues/:issueId/files/:fileNumber</p>
+		<h4>Parameters</h4>
+		<span class="indent">:issueId - the ID of the issue for which the file is being uploaded</span><br>
+		<span class="indent">:fileNumber - the file number of the file. These are returned in the Get Issue API call.</span>
+		<h4>Response</h4>
+		<p>On a successful request, the payload of the response contains the body of the file and the headers contain the file name and length. A status of 200 is set for successful completion. An appropriate failure status and error message are returned if the request fails.</p>
 	</div>
 </body>
 </html>
