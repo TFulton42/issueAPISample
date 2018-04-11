@@ -9,20 +9,22 @@
 	<h3>Get a single issue</h3>
 	<p>GET /api/v1/issues/:id</p>
 	<h4>Response</h4>
-	{
-		"id": 1,
-		"title": "Issue 1",
-		"description": "This is issue 1",
-		"reportedBy": "Jonny Quest",
-		"assignedTo": "Race Bannon",
-		"dataSubmitted": "2018-04-10T15:00:00.000Z",
-		"status": "Open",
-		"files": [{
-								"fileNumber": 1,
-								"originalFileName": "test1.txt",
-								"uploadedBy": "Dr. Quest"
-							}]
-	}
+	<pre><code>
+{
+	"id": 1,
+	"title": "Issue 1",
+	"description": "This is issue 1",
+	"reportedBy": "Jonny Quest",
+	"assignedTo": "Race Bannon",
+	"dataSubmitted": "2018-04-10T15:00:00.000Z",
+	"status": "Open",
+	"files": [{
+		"fileNumber": 1,
+		"originalFileName": "test1.txt",
+		"uploadedBy": "Dr. Quest"
+	}]
+}
+	</code></pre>
 
 	<h3>Get all issues</h3>
 	<p>GET /api/v1/issues</p>
@@ -32,15 +34,19 @@
 	<h3>Create an issue</h3>
 	<p>POST /api/v1/issues</p>
 	<p>Parameters</p>
-	{
-		"title": String, 				// The title of the issue
-		"description": String, 	// The description of the issue
-		"reportedBy": String		// The author of the issue
-	}
+	<pre><code>
+{
+	"title": String,		// The title of the issue
+	"description": String, 	// The description of the issue
+	"reportedBy": String	// The author of the issue
+}
+	</code></pre>
 	<h4>Response</h4>
-	{
-		"new-issue": 2
-	}
+	<pre><code>
+{
+	"new-issue": 2
+}
+	</code></pre>
 
 	<h2>Files</h2>
 	<h3>Download a file associated with an issue</h3>
@@ -51,14 +57,18 @@
 	<h3>Upload a file associated with an issue</h3>
 	<p>POST /api/v1/issues/:issueId/files</p>
 	<p>Parameters</p>
-	{
-		"filename": "test.txt", // The title of the file
-		"author": "Hadji" 			// The author of the file
-	}
+	<pre><code>
+{
+	"filename": "test.txt", // The title of the file
+	"author": "Hadji"		// The author of the file
+}
+	</code></pre>
 	<h4>Response</h4>
 	<p>The file is uploaded to the server</p>
-	{
-		"result": "File uploaded successfully"
-	}
+	<pre><code>
+{
+	"result": "File uploaded successfully"
+}
+	</code></pre>
 </body>
 </html>
