@@ -1,3 +1,9 @@
+// Florence Healthcare Coding Challenge
+// Issue and File API
+// Author: Tom Fulton
+
+// This all of the routes for the API.
+
 var express = require('express'),
 	router = express.Router(),
 	multer = require('multer'),
@@ -20,7 +26,7 @@ router.get('/', (req, res) => {
 	res.render('documentation');
 });
 
-// The INDEX route for all files for a specific issue
+// The SHOW? route for a file download for a specific issue
 router.get('/issues/:issue/files/:fileNumber', (req, res) => {
 	file.downloadFile(req.params.issue, req.params.fileNumber)
 	.then(result => {

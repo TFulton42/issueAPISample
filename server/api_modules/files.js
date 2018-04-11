@@ -150,7 +150,6 @@ function deleteFile(path)
 {
 	fs.unlink(path, (err) => {
 		if (err) {
-			console.log(err);
 			// Log some type of error here, but I don\'t have a logging module
 		}
 	});

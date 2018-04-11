@@ -1,3 +1,9 @@
+// Florence Healthcare Coding Challenge
+// Issue and File API
+// Author: Tom Fulton
+
+// These are the test startup and shutdown routines.
+
 var	mongoose = require('mongoose');
 
 var dbURI = 'mongodb://Florence:Florence@ds129144.mlab.com:29144/fulton';
@@ -6,7 +12,7 @@ var Issues = require('../../server/models/issues'),
 	Files = require('../../server/models/files');
 
 function openAndClearDB(resolve, reject) {
-	// Open up the DB connection and drop and existing collections
+	// Open up the DB connection and drop any existing collections
 	// A bit of callback hell here. I should probably modularize this.
 	mongoose.connect(dbURI);
 	var db = mongoose.connection;
@@ -47,6 +53,7 @@ function closeDB(resolve, reject) {
 	});
 }
 
+// Helper routines for the test setup. Create a known state.
 function createFileObject(dbId) {
 	var file1 = new Files({
 		fileNumber: 1,

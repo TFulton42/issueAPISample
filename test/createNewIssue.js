@@ -1,3 +1,9 @@
+// Florence Healthcare Coding Challenge
+// Issue and File API
+// Author: Tom Fulton
+
+// These are the tests for the createNewIssue call.
+
 var	mongoose = require('mongoose'),
 	chai = require('chai'),
 	assert = chai.assert,

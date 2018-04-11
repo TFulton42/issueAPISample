@@ -1,3 +1,9 @@
+// Florence Healthcare Coding Challenge
+// Issue and File API
+// Author: Tom Fulton
+
+// This is the model for the file collection.
+
 var mongoose = require('mongoose');
 
 var FileSchema = new mongoose.Schema({
