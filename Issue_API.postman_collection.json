@@ -1,0 +1,130 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Issue API",
+		"_postman_id": "85cf06a9-e4d9-b763-45d6-769a8a112fe5",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API Documentation",
+			"request": {
+				"url": "http://localhost:3000/api/v1/",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Issues",
+			"request": {
+				"url": "http://localhost:3000/api/v1/issues",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get one issue",
+			"request": {
+				"url": "http://localhost:3000/api/v1/issues/2",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create new issue",
+			"request": {
+				"url": "http://localhost:3000/api/v1/issues",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "title 6",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "description 6",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "reportedBy",
+							"value": "Fred Flintstone",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Upload file",
+			"request": {
+				"url": "http://localhost:3000/api/v1/issues/2/files",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "filename",
+							"description": "",
+							"type": "file",
+							"src": "test1.txt"
+						},
+						{
+							"key": "author",
+							"value": "Darth Vader",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Download file",
+			"request": {
+				"url": "http://localhost:3000/api/v1/issues/2/files/4",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
