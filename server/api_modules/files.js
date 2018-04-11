@@ -1,14 +1,20 @@
+// Florence Healthcare Coding Challenge
+// Issue and File API
+// Author: Tom Fulton
+
+// This is the module for the file upload and download part of the API.
+
+var	fs = require('fs');
+
 // MongoDB Models
 var Issues = require('../models/issues'),
-	Files = require('../models/files'),
-	fs = require('fs');
+	Files = require('../models/files');
 
 // Upload a file. I'm choosing to only validate that the file isn't zero length,
 // the author's name is also not empty and the file name is specified. I suspect
 // there are lots of choices that could be made for validation however. The issue
 // number must also be valid. I should probably also be validating some of the
 // HTTP headers.
-// Note: I am NOT removing the file once it uploads -- Check this. Maybe I am.
 function uploadFile(id, fileObj, bodyObj) {
 	return new Promise((resolve, reject) => {
 		var retVal = {status: 200, errString: 'File uploaded successfully'};
@@ -105,6 +111,7 @@ function uploadFile(id, fileObj, bodyObj) {
 	});
 }
 
+//Download the file. I'm just validating the issue ID and the file ID.
 function downloadFile(issue, fileNumber) {
 	return new Promise((resolve, reject) => {
 		var retVal = {status: 200, fileLocation: '', fileName: '', errString: ''};
@@ -118,7 +125,7 @@ function downloadFile(issue, fileNumber) {
 				retVal.errString = 'Error accessing database';
 				return resolve(retVal);
 			}
-			// Make sure there are 2 issues with the same ID
+			// Make sure there aren't 2 issues with the same ID
 			if (foundFiles.length !== 1) {
 				retVal.status = 409;
 				retVal.errString = 'Duplicate issues found';
@@ -126,7 +133,6 @@ function downloadFile(issue, fileNumber) {
 			}
 			// Make sure there aren't 2 files with the same ID
 			if (foundFiles[0].files.length !== 1) {
-				console.log(foundFiles);
 				retVal.status = 409;
 				retVal.errString = 'Duplicate files found';
 				return resolve(retVal);
@@ -138,10 +144,13 @@ function downloadFile(issue, fileNumber) {
 	});
 }
 
+// Delete a file. Just used (today) if one of the above methods fails and we need to
+// clean up a bit.
 function deleteFile(path)
 {
 	fs.unlink(path, (err) => {
 		if (err) {
+			console.log(err);
 			// Log some type of error here, but I don\'t have a logging module
 		}
 	});

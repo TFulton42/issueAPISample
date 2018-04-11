@@ -1,3 +1,9 @@
+// Florence Healthcare Coding Challenge
+// Issue and File API
+// Author: Tom Fulton
+
+// This is the module for the issue get and create part of the API.
+
 // MongoDB Models
 var Issues = require('../models/issues'),
 	Files = require('../models/files');
@@ -46,6 +52,7 @@ function getOneIssue(id) {
 					retVal.errString = 'Error accessing database';
 					return resolve(retVal);
 				} else if (!foundIssue) {
+					// Unknown issue
 					retVal.status = 404;
 					retVal.errString = 'Issue not found';
 					return resolve(retVal);
