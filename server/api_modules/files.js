@@ -55,31 +55,79 @@ function uploadFile(id, fileObj, bodyObj) {
 				return resolve(retVal);
 			}
 			// If we've gotten to here, all should be good and we can
-			// put the information in the database.
-			var fd = new Files({
-				originalFileName: fileObj.originalname,
-				location: fileObj.path,
-				uploadedBy: bodyObj.author,
-				dateSubmitted: Date.now(),
-				issueBelongedTo: foundIssue._id
-			});
-			Files.create(fd, (err, newFile) => {
+			// put the information in the database. I'm doing the numbering
+			// the same way as I did for issues. Not optimal but probably
+			// sufficient for our purposes.
+			Files.findOne({})
+			.select('fileNumber')
+			.sort('-fileNumber')
+			.exec(function(err, foundFile) {
 				if (err) {
 					retVal.status = 500;
 					retVal.errString = 'Error accessing database';
-					deleteFile(fileObj.path);
 					return resolve(retVal);
-				}
-				foundIssue.files.push(newFile._id);
-				foundIssue.save((err) => {
-					if (err) {
-						retVal.status = 500;
-						retVal.errString = 'Error accessing database';
-						return resolve(retVal);
+				} else {
+					if (!foundFile) {
+						newId = 1;
+					} else {
+						newId = foundFile.fileNumber + 1;
 					}
-					return resolve(retVal);
-				});
+					var fd = new Files({
+						fileNumber: newId,
+						originalFileName: fileObj.originalname,
+						location: fileObj.path,
+						uploadedBy: bodyObj.author,
+						dateSubmitted: Date.now(),
+						issueBelongedTo: foundIssue._id
+					});
+					Files.create(fd, (err, newFile) => {
+						if (err) {
+							retVal.status = 500;
+							retVal.errString = 'Error accessing database';
+							deleteFile(fileObj.path);
+							return resolve(retVal);
+						}
+						foundIssue.files.push(newFile._id);
+						foundIssue.save((err) => {
+							if (err) {
+								retVal.status = 500;
+								retVal.errString = 'Error accessing database';
+								return resolve(retVal);
+							}
+							return resolve(retVal);
+						});
+					});
+				}
 			});
+		});
+	});
+}
+
+function getAllFiles(issue, fileNumber) {
+	return new Promise((resolve, reject) => {
+		var retVal = {status: 200, fileLocation: '', fileName: '', errString: 'All files'};
+
+		Issues.find({id: issue})
+		.populate({path: 'files', match: {fileNumber: fileNumber}})
+		.exec((err, foundFiles) => {
+			if (err) {
+				retVal.status = 500;
+				retVal.errString = 'Error accessing database';
+				return resolve(retVal);
+			}
+			if (foundFiles.length !== 1) {
+				retVal.status = 409;
+				retVal.errString = 'Duplicate issues found'
+				return resolve(retVal);
+			}
+			if (foundFiles[0].files.length !== 1) {
+				retVal.status = 409;
+				retVal.errString = 'Duplicate files found'
+				return resolve(retVal);
+			}
+			retVal.fileLocation = foundFiles[0].files[0].location;
+			retVal.fileName = foundFiles[0].files[0].originalFileName;
+			return resolve(retVal);
 		});
 	});
 }
@@ -94,3 +142,4 @@ function deleteFile(path)
 }
 
 module.exports.uploadFile = uploadFile;
+module.exports.getAllFiles = getAllFiles;

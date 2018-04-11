@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var FileSchema = new mongoose.Schema({
+	fileNumber: Number,
 	originalFileName: String,
 	location: String,
 	uploadedBy: String,

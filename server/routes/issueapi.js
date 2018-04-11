@@ -5,9 +5,6 @@ var express = require('express'),
 	file = require('../api_modules/files'),
 	doc = require('../api_modules/doc');
 
-// MongoDB Models
-var Issues = require('../models/issues');
-
 // Configure the file upload destination
 var storage = multer.diskStorage({
 		destination: (req, file, cb) => {
@@ -22,9 +19,26 @@ var storage = multer.diskStorage({
 // The home route for the API. This will return some documentation for the API
 router.get('/', doc.getDocumentation);
 
-// The upload route for a file
-router.post('/issues/:id/file', upload.single('filename'), (req, res) => {
-	file.uploadFile(req.params.id, req.file, req.body)
+// The INDEX route for all files for a specific issue
+router.get('/issues/:issue/files/:fileNumber', (req, res) => {
+	file.getAllFiles(req.params.issue, req.params.fileNumber)
+	.then(result => {
+		if (result.status === 200) {
+			var fileName = __dirname + '\\..\\' + result.fileLocation;
+			res.download(fileName, result.fileName);
+		} else {
+			// I'm doing this since the test module isn't handling reject correctly.
+			// At least I'm not sure what to do with Promise and async.
+			res.status(result.status).send({'error': result.errString});
+		}		
+	}, errResult => {		
+		res.status(errResult.status).send({'error': errResult.errString});
+	});
+});
+
+// The CREATE route for a file for a specific issue
+router.post('/issues/:issue/files', upload.single('filename'), (req, res) => {
+	file.uploadFile(req.params.issue, req.file, req.body)
 	.then(result => {
 		if (result.status === 200) {
 			res.send({'result': result.errString});

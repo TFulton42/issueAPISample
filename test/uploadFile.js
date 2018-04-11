@@ -26,20 +26,18 @@ describe('uploadFile Tests', () => {
 	// Run the tests
 	describe('Test uploadFile', () => {
 		it('should upload a valid file for issue 3', async() => {
-			var fileObj = {size: 100, originalname: 'test.txt', path: 'filestorage\\file123'},
+			var fileObj = {size: 100, originalname: 'test.txt', path: 'filestorage\\testfile.txt'},
 				bodyObj = {author: 'Test User'};
 
 			var result = await files.uploadFile(3, fileObj, bodyObj);
 			assert.isObject(result, 'Result is not an object');
 			assert.equal(result.status, 200, 'Status not 200');
 			assert.equal(result.errString, 'File uploaded successfully', 'errString incorrect');
-			// I should also be checking the values of the fields in the database to
-			// make sure they populated properly. Since I chose to implement only the
-			// "upload one, download all" (see my email about my assumptions), I don't
-			// have a method to grab just one record and I'm not testing that here.
 
-			// use the get method and check that there is just one record
-			// var issue3 = await issues.getOneIssue(3);
+			// Use the get method and check that there is just one file record
+			var issue3 = await issues.getOneIssue(3);
+			assert.equal(issue3.issue.files.length, 1, 'incorrect number of file records');
+			assert.equal(issue3.issue.files[0].fileNumber, 1, 'incorrect fileNumber');
 		});
 
 		it('should fail if an empty file is uploaded', async() => {

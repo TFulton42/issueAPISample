@@ -9,8 +9,9 @@ var Issues = require('../models/issues'),
 function getAllIssues() {
 	return new Promise((resolve, reject) => {
 		Issues.find({})
-		.select('-_id -files -__v')
+		.select('-_id -__v')
 		.sort({id: 'asc'})
+		.populate({path: 'files', options: {sort: {fileNumber: 'asc'}}, select: '-_id fileNumber originalFileName uploadedBy'})
 		.exec(function(err, list) {
 			var retVal = {status: 200, errString: '', issues: list};
 			if (err) {
@@ -36,8 +37,8 @@ function getOneIssue(id) {
 			resolve(retVal);
 		} else {
 			Issues.findOne({id: id})
-			.select('-_id -__v -files')
-			.populate({path: 'files', options: {sort: {dataSubmitted: 'asc'}}})
+			.select('-_id -__v')
+			.populate({path: 'files', options: {sort: {fileNumber: 'asc'}}, select: '-_id fileNumber originalFileName uploadedBy'})
 			.exec((err, foundIssue) => {
 				if (err) {
 					retVal.status = 500;

@@ -1,2 +1,4 @@
 node_modules
 server/filestorage/*
+!server/filestorage/testfile.txt
+server/tmp
