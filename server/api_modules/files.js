@@ -1,4 +1,3 @@
-// Florence Healthcare Coding Challenge
 // Issue and File API
 // Author: Tom Fulton
 

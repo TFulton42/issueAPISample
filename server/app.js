@@ -1,4 +1,3 @@
-// Florence Healthcare Coding Challenge
 // Issue and File API
 // Author: Tom Fulton
 
@@ -18,7 +17,7 @@ app.set("view engine", "ejs");
 
 // Configuration and connection for the database
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://Florence:Florence@ds129144.mlab.com:29144/fulton');
+mongoose.connect('mongodb://<username>:<password>@<db url>');
 
 // The API routes - It may not be necessary to break this into 2 files for this small API.
 // But for something bigger, I would like the modularity.
@@ -28,7 +27,7 @@ app.use('/api/v1', issueApiRoutes);
 // Handle any unknown routes
 app.get('*', function (req, res) {
 	console.log('Unknown route');
-	res.status(404).send('Florence Coding Challenge - Page not found');
+	res.status(404).send('Page not found');
 });
 
 app.listen(3000, function() {

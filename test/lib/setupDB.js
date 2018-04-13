@@ -1,4 +1,3 @@
-// Florence Healthcare Coding Challenge
 // Issue and File API
 // Author: Tom Fulton
 
@@ -6,7 +5,7 @@
 
 var	mongoose = require('mongoose');
 
-var dbURI = 'mongodb://Florence:Florence@ds129144.mlab.com:29144/fulton';
+var dbURI = 'mongodb:////<username>:<password>@<db url>';
 
 var Issues = require('../../server/models/issues'),
 	Files = require('../../server/models/files');
